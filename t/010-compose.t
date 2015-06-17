@@ -8,6 +8,7 @@ use AccessorFacade;
 
 class Bar {
     has $.boot is rw = "foo";
+    has $.star is rw = '*';
     sub get_bar(Bar:D $self) {
         $self.boot;
     }
@@ -16,7 +17,7 @@ class Bar {
     }
 
     sub my_fudge(Bar $self, Str $t) {
-        "*" ~ $t ~ "*";
+        $self.star ~ $t ~ $self.star;
     }
 
     method boom() is rw is accessor_facade(&get_bar, &set_bar) {};
