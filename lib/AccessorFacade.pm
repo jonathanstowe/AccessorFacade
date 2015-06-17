@@ -4,7 +4,7 @@ use v6;
 
 module AccessorFacade {
 
-    my role Provider[&get, &set, &fudge = Code] {
+    my role Provider[&get, &set, &before?, &after?] {
         method CALL-ME(*@args) is rw {
             my $self = @args[0];
             Proxy.new(
@@ -12,10 +12,13 @@ module AccessorFacade {
                             &get($self);
                         },
                         STORE   =>  sub ($, $val is copy ) {
-                            if &fudge.defined {
-                                $val = &fudge($val);
+                            if &before.defined {
+                                $val = &before($self, $val);
                             }
-                            &set($self, $val);
+                            my $rc = &set($self, $val);
+                            if &after.defined {
+                                &after($self, $rc);
+                            }
                         }
             );
 	    }
@@ -34,9 +37,10 @@ module AccessorFacade {
 
         }
 
-        my $fudge = $accessor_facade[2]:exists ?? $accessor_facade[2] !! Code;
+        my $before = $accessor_facade[2]:exists ?? $accessor_facade[2] !! Code;
+        my $after  = $accessor_facade[3]:exists ?? $accessor_facade[3] !! Code;
 
-	    $r does Provider[$accessor_facade[0], $accessor_facade[1], $fudge];
+	    $r does Provider[$accessor_facade[0], $accessor_facade[1], $before, $after];
     }
 }
 

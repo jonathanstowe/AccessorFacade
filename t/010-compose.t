@@ -15,7 +15,7 @@ class Bar {
         $self.boot = $val;
     }
 
-    sub my_fudge(Str $t) {
+    sub my_fudge(Bar $self, Str $t) {
         "*" ~ $t ~ "*";
     }
 
