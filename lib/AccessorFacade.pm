@@ -33,11 +33,10 @@ module AccessorFacade {
             die X::AccessorFacade::Usage.new(message => "trait 'accessor_facade' requires &getter and &setter arguments");
 
         }
-        if not $accessor_facade[2]:exists {
-            $accessor_facade[2] = Code;
-        }
 
-	    $r does Provider[$accessor_facade[0], $accessor_facade[1], $accessor_facade[2]];
+        my $fudge = $accessor_facade[2]:exists ?? $accessor_facade[2] !! Code;
+
+	    $r does Provider[$accessor_facade[0], $accessor_facade[1], $fudge];
     }
 }
 
