@@ -40,12 +40,10 @@ The above code will be reduced with the use of AccessorFacade to:
 
     class Shout is repr('CPointer') {
 
-        sub shout_set_host(Shout, Str) returns int32 is native('libshout')
-        { * } sub shout_get_host(Shout) returns Str is native('libshout')
-        { * }
+        sub shout_set_host(Shout, Str) returns int32 is native('libshout') { * } 
+        sub shout_get_host(Shout) returns Str is native('libshout') { * }
 
-        method host() is rw is attribute_facade(&shout_set_host,
-        &shout_get_host) { }
+        method host() is rw is attribute_facade(&shout_set_host, &shout_get_host) { }
 
         ...
     }
