@@ -29,12 +29,12 @@ module AccessorFacade {
     }
 
     multi trait_mod:<is>(Method $r, :$accessor_facade!) is export {
-        if not all($accessor_facade.list) ~~ Callable {
-            die X::AccessorFacade::Usage.new(message => "trait 'accessor_facade' only takes Callable arguments");
-        }
         if $accessor_facade.elems < 2 {
             die X::AccessorFacade::Usage.new(message => "trait 'accessor_facade' requires &getter and &setter arguments");
 
+        }
+        if not all($accessor_facade.list) ~~ Callable {
+            die X::AccessorFacade::Usage.new(message => "trait 'accessor_facade' only takes Callable arguments");
         }
 
         my $before = $accessor_facade[2]:exists ?? $accessor_facade[2] !! Code;
