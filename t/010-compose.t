@@ -20,8 +20,14 @@ class Bar {
         $self.star ~ $t ~ $self.star;
     }
 
+    sub my_check(Bar $self, $rc ) {
+        die "with $rc";
+    }
+
     method boom() is rw is accessor_facade(&get_bar, &set_bar) {};
     method zapp() is rw is accessor_facade(&get_bar, &set_bar, &my_fudge) {};
+    method poww() is rw is accessor_facade(&get_bar, &set_bar, &my_fudge, &my_check ) { }
+    method bosh() is rw is accessor_facade(&get_bar, &set_bar, Code, &my_check ) { }
 }
  
 my $a;
@@ -36,6 +42,8 @@ is($a.zapp, "yada", "method with fudge");
 lives-ok { $a.zapp = 'banana' }, "setter with fudge";
 is($a.zapp, '*banana*', "and got fudged value");
 is($a.boot, '*banana*', "and the storage get changed");
+throws-like { $a.poww = 'food' }, ( message => '*food*' ) , '&after got called';
+throws-like { $a.bosh = 'duck' }, ( message => 'duck' ) , '&after got called (no &before)';
 
 done;
 # vim: expandtab shiftwidth=4 ft=perl6
