@@ -161,7 +161,7 @@ Note in the above example the C<Code> type if used as a placeholder for the empt
 =end pod
 
 
-module AccessorFacade {
+module AccessorFacade:ver<v0.0.2>:auth<github:jonathanstowe> {
 
     my role Provider[&get, &set, &before?, &after?] {
         method CALL-ME(*@args) is rw {
