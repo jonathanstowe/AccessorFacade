@@ -91,10 +91,10 @@ is handled is descibed in the documentation.)
 
 =head2 TRAIT APPLICATION
 
-The trait C<attribute_facade> should be applied to an object method with no arguments
-that has the C<rw> trait, (if the method isn't rw then assignment simply won't work,
-no check is currently performed.)  The body of the method should be empty, but will be
-discarded anyway if it isn't.
+The trait C<attribute_facade> should be applied to an object method
+with no arguments that has the C<rw> trait, (if the method isn't rw then
+assignment simply won't work, no check is currently performed.)  The body
+of the method should be empty, but will be discarded anyway if it isn't.
 
 The signature of the trait can be thought of as being:
 
@@ -104,22 +104,24 @@ The individual arguments are:
 
 =head3 &getter
 
-This is the function that is called to retrieve the attribute value.  It has exactly one
-argument which is the invocant of the method (i.e. C<self>).  Its return value will be the
-value of the method invocation.
+This is the function that is called to retrieve the attribute value.
+It has exactly one argument which is the invocant of the method
+(i.e. C<self>).  Its return value will be the value of the method
+invocation.
 
 =head3 &setter
 
-This is the function that will be called to set the attribute value (i.e. when it is assigned to.)
-It will be called with two arguments: the invocant (C<self>) and the value to set.  It may
-return a value which will be passed to L<&after|#&amp;after> if it is defined.
+This is the function that will be called to set the attribute value
+(i.e. when it is assigned to.)  It will be called with two arguments:
+the invocant (C<self>) and the value to set.  It may return a value
+which will be passed to L<&after|#&amp;after> if it is defined.
 
 =head3 &before
 
-If this is defined this will be called when the value is being set with the invocant and the
-value and its returned value will be passed to L<&setter|#&amp;setter> instead of the
-original value, it is free to do what it likes as long as the resulting value is acceptable
-to the &setter.
+If this is defined this will be called when the value is being set with
+the invocant and the value and its returned value will be passed to
+L<&setter|#&amp;setter> instead of the original value, it is free to do
+what it likes as long as the resulting value is acceptable to the &setter.
 
 This is how the C<explicitly-manage> would be applied in the example above:
 
@@ -134,14 +136,15 @@ This is how the C<explicitly-manage> would be applied in the example above:
 
 =end code
 
-It is of course free to perform a validation and throw an exception or whatever may be 
-appropriate.
-        
+It is of course free to perform a validation and throw an exception or
+whatever may be appropriate.
+
 =head3 &after
 
-This will be called after L<&setter|#&amp;setter> with the invocant and the return value of
-C<&setter>.  It is primarily intended where the setter may return a value to indicate the
-success or otherwise of setting the attribute and this should be turned into an exception:
+This will be called after L<&setter|#&amp;setter> with the invocant
+and the return value of C<&setter>.  It is primarily intended where
+the setter may return a value to indicate the success or otherwise of
+setting the attribute and this should be turned into an exception:
 
 =begin code
 
@@ -155,8 +158,9 @@ success or otherwise of setting the attribute and this should be turned into an 
 
 =end code
 
-Note in the above example the C<Code> type if used as a placeholder for the empty C<&before>
-(this is due to the way the "arguments" to the trait are checked.)
+Note in the above example the C<Code> type if used as a placeholder
+for the empty C<&before> (this is due to the way the "arguments" to the
+trait are checked.)
 
 =end pod
 
