@@ -43,7 +43,7 @@ The above code will be reduced with the use of AccessorFacade to:
         sub shout_set_host(Shout, Str) returns int32 is native('libshout') { * } 
         sub shout_get_host(Shout) returns Str is native('libshout') { * }
 
-        method host() is rw is attribute_facade(&shout_set_host, &shout_get_host) { }
+        method host() is rw is accessor-facade(&shout_set_host, &shout_get_host) { }
 
         ...
     }
@@ -95,9 +95,9 @@ welcomed via github at:
 
 https://github.com/jonathanstowe/AccessorFacade
 
-It may use features and behaviour of Perl 6 that aren't present in even slightly
-older builds (and which are anticipated to be in a release,) please check with a
-new build before reporting a bug.
+It may use features and behaviour of Perl 6 that aren't present in even
+slightly older builds (and which are anticipated to be in a release,)
+please check with a new build before reporting a bug.
 
 ## Licence
 

@@ -20,7 +20,7 @@ AccessorFacade -  turn indivdual get/set subroutines into a single read/write ob
         sub shout_set_host(Shout, Str) returns int32 is native('libshout') { * } 
         sub shout_get_host(Shout) returns Str is native('libshout') { * }
 
-        method host() is rw is attribute_facade(&shout_set_host, &shout_get_host) { }
+        method host() is rw is attribute-facade(&shout_set_host, &shout_get_host) { }
 
         ...
     }
@@ -69,7 +69,7 @@ The above code will be reduced with the use of AccessorFacade to:
         sub shout_set_host(Shout, Str) returns int32 is native('libshout') { * } 
         sub shout_get_host(Shout) returns Str is native('libshout') { * }
 
-        method host() is rw is attribute_facade(&shout_set_host, &shout_get_host) { }
+        method host() is rw is attribute-facade(&shout_set_host, &shout_get_host) { }
 
         ...
     }
@@ -91,14 +91,14 @@ is handled is descibed in the documentation.)
 
 =head2 TRAIT APPLICATION
 
-The trait C<attribute_facade> should be applied to an object method
+The trait C<attribute-facade> should be applied to an object method
 with no arguments that has the C<rw> trait, (if the method isn't rw then
 assignment simply won't work, no check is currently performed.)  The body
 of the method should be empty, but will be discarded anyway if it isn't.
 
 The signature of the trait can be thought of as being:
 
-    attribute_facade(Method:D: $method, &getter, &setter, &before?, &after?)
+    attribute-facade(Method:D: $method, &getter, &setter, &before?, &after?)
 
 The individual arguments are:
 
@@ -132,7 +132,7 @@ This is how the C<explicitly-manage> would be applied in the example above:
         $str;
     }
 
-    method host() is rw is attribute_facade(&shout_set_host, &shout_get_host, &managed) { }
+    method host() is rw is attribute-facade(&shout_set_host, &shout_get_host, &managed) { }
 
 =end code
 
@@ -154,7 +154,7 @@ setting the attribute and this should be turned into an exception:
         }
     }
 
-    method host() is rw is attribute_facade(&shout_set_host, &shout_get_host, Code, &check) { }
+    method host() is rw is attribute-facade(&shout_set_host, &shout_get_host, Code, &check) { }
 
 =end code
 
@@ -186,10 +186,23 @@ module AccessorFacade:ver<v0.0.2>:auth<github:jonathanstowe> {
                           $val;
                         },
                         STORE   =>  sub ($, $val is copy ) {
+                            my $store-val;
                             if &before.defined {
-                                $val = &before($self, $val);
+                                $store-val = &before($self, $val);
                             }
-                            my $rc = &set($self, $val);
+                            else {
+                                # This is necessary because can()
+                                # fails on an Enum RT#125445
+                                try {
+                                    $store-val = $val.value;
+                                    CATCH {
+                                        default {
+                                            $store-val = $val;
+                                        }
+                                    }
+                                }
+                            }
+                            my $rc = &set($self, $store-val);
                             if &after.defined {
                                 &after($self, $rc);
                             }

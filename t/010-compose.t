@@ -29,10 +29,16 @@ class Bar {
     method poww() is rw is accessor-facade(&get_bar, &set_bar, &my_fudge, &my_check ) { }
     method bosh() is rw is accessor-facade(&get_bar, &set_bar, Code, &my_check ) { }
 
-    has Int $.bool = 1;
+    has Int $.bool is rw = 1;
     sub get_boolio(Bar $self) returns Int { $self.bool }
     sub set_boolio(Bar $self, Int $bool) { $self.bool = $bool }
     method boolio() returns Bool is rw is accessor-facade(&get_boolio, &set_boolio) { * }
+
+    enum Burble <A B C>;
+    has Int $.burb is rw = 1;
+    sub get_burbio(Bar $self) returns Int { $self.burb }
+    sub set_burbio(Bar $self, Int $burb) { $self.burb = $burb }
+    method burbio() returns Burble is rw is accessor-facade(&get_burbio, &set_burbio) { * }
 }
  
 my $a;
@@ -51,6 +57,12 @@ throws-like { $a.poww = 'food' }, ( message => '*food*' ) , '&after got called';
 throws-like { $a.bosh = 'duck' }, ( message => 'duck' ) , '&after got called (no &before)';
 
 is($a.boolio, True, "Boolean coercion works");
+lives-ok { $a.boolio = False }, "set with a boolean";
+is($a.boolio, False, "Boolean coercion works");
+
+is($a.burbio, Bar::B, "enum coercion works");
+lives-ok { $a.burbio = Bar::C }, "set with an enum";
+is($a.burbio, Bar::C, "enum coercion works");
 
 done;
 # vim: expandtab shiftwidth=4 ft=perl6
