@@ -24,10 +24,15 @@ class Bar {
         die "with $rc";
     }
 
-    method boom() is rw is accessor_facade(&get_bar, &set_bar) {};
-    method zapp() is rw is accessor_facade(&get_bar, &set_bar, &my_fudge) {};
-    method poww() is rw is accessor_facade(&get_bar, &set_bar, &my_fudge, &my_check ) { }
-    method bosh() is rw is accessor_facade(&get_bar, &set_bar, Code, &my_check ) { }
+    method boom() is rw is accessor-facade(&get_bar, &set_bar) {};
+    method zapp() is rw is accessor-facade(&get_bar, &set_bar, &my_fudge) {};
+    method poww() is rw is accessor-facade(&get_bar, &set_bar, &my_fudge, &my_check ) { }
+    method bosh() is rw is accessor-facade(&get_bar, &set_bar, Code, &my_check ) { }
+
+    has Int $.bool = 1;
+    sub get_boolio(Bar $self) returns Int { $self.bool }
+    sub set_boolio(Bar $self, Int $bool) { $self.bool = $bool }
+    method boolio() returns Bool is rw is accessor-facade(&get_boolio, &set_boolio) { * }
 }
  
 my $a;
@@ -44,6 +49,8 @@ is($a.zapp, '*banana*', "and got fudged value");
 is($a.boot, '*banana*', "and the storage get changed");
 throws-like { $a.poww = 'food' }, ( message => '*food*' ) , '&after got called';
 throws-like { $a.bosh = 'duck' }, ( message => 'duck' ) , '&after got called (no &before)';
+
+is($a.boolio, True, "Boolean coercion works");
 
 done;
 # vim: expandtab shiftwidth=4 ft=perl6
