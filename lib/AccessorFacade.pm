@@ -211,45 +211,42 @@ module AccessorFacade:ver<v0.0.4>:auth<github:jonathanstowe> {
 	    }
     }
 
-    class X::AccessorFacade::Usage is Exception {
+    class X::Usage is Exception {
         has Str $.message is rw;
     }
 
-    multi trait_mod:<is>(Method $r, :$accessor_facade!) is export {
-        DEPRECATED('accessor-facade',|<0.0.2 0.0.3>);
+    multi trait_mod:<is> (Method $r, :$accessor-facade! where { $_.elems < 2 }) is export {
+        X::Usage.new(message => q[trait 'accessor-facade' requires &getter and &setter arguments]).throw;
+    }
+    multi trait_mod:<is> (Method $r, :$accessor-facade! (*@a) where { any($_.list) !~~ Code }) is export {
+        say $accessor-facade.perl;
+        X::Usage.new( message => q[trait 'accessor-facade' only takes Callable arguments]).throw;
+    }
+
+    multi trait_mod:<is>(Method $r, :@accessor-facade! (&getter, &setter, &before?, &after?)) is export {
         try {
-            accessor-facade($r, $accessor_facade);
+            accessor-facade($r, &getter, &setter, &before, &after);
             CATCH {
                 when X::TypeCheck::Binding {
-                    die X::AccessorFacade::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
+                    die X::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
                 }
             }
         }
     }
-    multi trait_mod:<is>(Method $r, :$accessor-facade!) is export {
+
+    multi trait_mod:<is>(Method $r, :@accessor-facade! (:&getter!, :&setter!, :&before, :&after )) is export {
         try {
-            accessor-facade($r, $accessor-facade);
+            accessor-facade($r, &getter, &setter, &before, &after);
             CATCH {
                 when X::TypeCheck::Binding {
-                    die X::AccessorFacade::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
+                    die X::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
                 }
             }
         }
     }
 
-    my sub accessor-facade(Method $r, List $accessor_facade) {
-        if $accessor_facade.elems < 2 {
-            die X::AccessorFacade::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
-
-        }
-        if not all($accessor_facade.list) ~~ Callable {
-            die X::AccessorFacade::Usage.new(message => "trait 'accessor-facade' only takes Callable arguments");
-        }
-
-        my $before = $accessor_facade[2]:exists ?? $accessor_facade[2] !! Code;
-        my $after  = $accessor_facade[3]:exists ?? $accessor_facade[3] !! Code;
-
-	    $r does Provider[$accessor_facade[0], $accessor_facade[1], $before, $after];
+    my sub accessor-facade(Method $r, &getter, &setter, &before?, &after?) {
+	    $r does Provider[&getter, &setter, &before, &after];
     }
 }
 

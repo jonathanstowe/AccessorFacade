@@ -25,6 +25,7 @@ class Bar {
     }
 
     method boom() is rw is accessor-facade(&get_bar, &set_bar) {};
+    method boom-named() is rw is accessor-facade(getter => &get_bar, setter => &set_bar) { }
     method zapp() is rw is accessor-facade(&get_bar, &set_bar, &my_fudge) {};
     method poww() is rw is accessor-facade(&get_bar, &set_bar, &my_fudge, &my_check ) { }
     method bosh() is rw is accessor-facade(&get_bar, &set_bar, Code, &my_check ) { }
@@ -46,9 +47,14 @@ my $a;
 lives-ok { $a = Bar.new }, "construct object with trait";
  
 is($a.boom, $a.boot, "get works fine");
+is($a.boom-named, $a.boot, "get works finei (named)");
 lives-ok { $a.boom = "yada" }, "exercise setter";
 is($a.boom, "yada", "get returns what we set");
 is($a.boot, "yada", "and the internal thing got set");
+lives-ok { $a.boom-named = "furble" }, "setter (named) ";
+is($a.boom-named, "furble", "get returns what we set (named)");
+is($a.boot, "furble", "and the internal thing got set");
+lives-ok { $a.boom-named = "yada" }, "reset with named";
 is($a.zapp, "yada", "method with fudge");
 lives-ok { $a.zapp = 'banana' }, "setter with fudge";
 is($a.zapp, '*banana*', "and got fudged value");
