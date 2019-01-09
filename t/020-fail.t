@@ -3,7 +3,6 @@
 use v6;
 use Test;
 
-use lib 'lib';
 use AccessorFacade;
 
 my $test_class;

@@ -1,6 +1,6 @@
 #!perl6
 
-use v6.c;
+use v6;
 
 =begin pod
 
@@ -200,7 +200,7 @@ This may be more conveniently written with named argument style:
 =end pod
 
 
-module AccessorFacade:ver<0.0.7>:auth<github:jonathanstowe> {
+module AccessorFacade:ver<0.0.8>:auth<github:jonathanstowe>:api<1.0> {
 
     my role Provider[&get, &set, &before?, &after?] {
         method CALL-ME(*@args) is rw {
@@ -252,7 +252,6 @@ module AccessorFacade:ver<0.0.7>:auth<github:jonathanstowe> {
         X::Usage.new(message => q[trait 'accessor-facade' requires &getter and &setter arguments]).throw;
     }
     multi trait_mod:<is> (Method $r, :$accessor-facade! (*@a) where { any($_.list) !~~ Code }) is export {
-        say $accessor-facade.perl;
         X::Usage.new( message => q[trait 'accessor-facade' only takes Callable arguments]).throw;
     }
 

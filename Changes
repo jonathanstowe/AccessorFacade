@@ -1,3 +1,5 @@
+v0.0.8		Wed  9 Jan 20:20:02 GMT 2019
+	* Fix failing test because of spurious output
 v0.0.7		Mon Apr 25 16:43:02 2016 +0100 
 	* Remove three un-necessary try uses
 v0.0.6		Sat Mar 12 10:22:35 2016 +0000 
