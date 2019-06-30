@@ -200,7 +200,7 @@ This may be more conveniently written with named argument style:
 =end pod
 
 
-module AccessorFacade:ver<0.0.8>:auth<github:jonathanstowe>:api<1.0> {
+module AccessorFacade:ver<0.0.9>:auth<github:jonathanstowe>:api<1.0> {
 
     my role Provider[&get, &set, &before?, &after?] {
         method CALL-ME(*@args) is rw {
@@ -244,22 +244,22 @@ module AccessorFacade:ver<0.0.8>:auth<github:jonathanstowe>:api<1.0> {
 	    }
     }
 
-    class X::Usage is Exception {
+    class X::AccessorFacade::Usage is Exception {
         has Str $.message is rw;
     }
 
     multi trait_mod:<is> (Method $r, :$accessor-facade! where { $_.elems < 2 }) is export {
-        X::Usage.new(message => q[trait 'accessor-facade' requires &getter and &setter arguments]).throw;
+        X::AccessorFacade::Usage.new(message => q[trait 'accessor-facade' requires &getter and &setter arguments]).throw;
     }
     multi trait_mod:<is> (Method $r, :$accessor-facade! (*@a) where { any($_.list) !~~ Code }) is export {
-        X::Usage.new( message => q[trait 'accessor-facade' only takes Callable arguments]).throw;
+        X::AccessorFacade::Usage.new( message => q[trait 'accessor-facade' only takes Callable arguments]).throw;
     }
 
     multi trait_mod:<is>(Method $r, :@accessor-facade! (&getter, &setter, &before?, &after?)) is export {
         accessor-facade($r, &getter, &setter, &before, &after);
         CATCH {
             when X::TypeCheck::Binding {
-                die X::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
+                die X::AccessorFacade::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
             }
        }
     }
@@ -268,7 +268,7 @@ module AccessorFacade:ver<0.0.8>:auth<github:jonathanstowe>:api<1.0> {
         accessor-facade($r, &getter, &setter, &before, &after);
         CATCH {
             when X::TypeCheck::Binding {
-                die X::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
+                die X::AccessorFacade::Usage.new(message => "trait 'accessor-facade' requires &getter and &setter arguments");
             }
         }
     }
