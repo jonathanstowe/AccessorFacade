@@ -1,4 +1,4 @@
-#!perl6
+#!raku
 
 use v6;
 
@@ -17,7 +17,7 @@ AccessorFacade -  turn indivdual get/set subroutines into a single read/write ob
 
     class Shout is repr('CPointer') {
 
-        sub shout_set_host(Shout, Str) returns int32 is native('libshout') { * } 
+        sub shout_set_host(Shout, Str) returns int32 is native('libshout') { * }
         sub shout_get_host(Shout) returns Str is native('libshout') { * }
 
         method host() is rw is attribute-facade(&shout_set_host, &shout_get_host) { }
@@ -66,7 +66,7 @@ The above code will be reduced with the use of AccessorFacade to:
 
     class Shout is repr('CPointer') {
 
-        sub shout_set_host(Shout, Str) returns int32 is native('libshout') { * } 
+        sub shout_set_host(Shout, Str) returns int32 is native('libshout') { * }
         sub shout_get_host(Shout) returns Str is native('libshout') { * }
 
         method host() is rw is attribute-facade(&shout_get_host, &shout_set_host) { }
@@ -91,7 +91,7 @@ and paste and hopefully programmer error.
 
 Whilst this was designed primarily to work with a fixed native API, it
 is possible that it could be used to provide an OO facade to a plain
-perl procedural library. The only requirement that there is a getter
+Raku procedural library. The only requirement that there is a getter
 subroutine that accepts an object as its first argument and returns the
 attribute value and a setter subroutine that accepts the object and the
 value to be set (it may return a value to indicate success - how this
@@ -200,7 +200,7 @@ This may be more conveniently written with named argument style:
 =end pod
 
 
-module AccessorFacade:ver<0.0.9>:auth<github:jonathanstowe>:api<1.0> {
+module AccessorFacade:ver<0.1.0>:auth<github:jonathanstowe>:api<1.0> {
 
     my role Provider[&get, &set, &before?, &after?] {
         method CALL-ME(*@args) is rw {
@@ -278,4 +278,4 @@ module AccessorFacade:ver<0.0.9>:auth<github:jonathanstowe>:api<1.0> {
     }
 }
 
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku

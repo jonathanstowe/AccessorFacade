@@ -1,5 +1,8 @@
 {
   "name": "AccessorFacade",
+  "auth": "github:jonathanstowe",
+  "version": "0.1.0",
+  "api": "1.0",
   "source-url": "git://github.com/jonathanstowe/AccessorFacade.git",
   "support": {
     "source": "git://github.com/jonathanstowe/AccessorFacade.git",
@@ -7,12 +10,11 @@
     "bugtracker": "https://github.com/jonathanstowe/AccessorFacade/issues"
   },
   "perl": "6.*",
+  "raku": "6.*",
   "resources": [
   ],
   "build-depends": [
   ],
-  "author": "Jonathan Stowe <jns+git@gellyfish.co.uk>",
-  "auth": "github:jonathanstowe",
   "depends": [
   ],
   "tags": [
@@ -26,11 +28,9 @@
   "provides": {
     "AccessorFacade": "lib/AccessorFacade.pm"
   },
-  "version": "0.0.9",
-  "api": "1.0",
   "authors": [
     "Jonathan Stowe <jns+git@gellyfish.co.uk>"
   ],
   "description": "Provides a method trait to turn indivdual get/set subroutines into a single attribute",
-  "meta-version": "0"
+  "meta-version": "1"
 }

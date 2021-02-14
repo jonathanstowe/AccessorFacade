@@ -1,4 +1,4 @@
-#!perl6
+#!raku
 
 use v6;
 use Test;
@@ -80,4 +80,4 @@ lives-ok { $a.burbio = Bar::C }, "set with an enum";
 is($a.burbio, Bar::C, "enum coercion works");
 
 done-testing;
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku

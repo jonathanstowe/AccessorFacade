@@ -1,4 +1,4 @@
-#!perl6
+#!raku
 
 use v6;
 use Test;
@@ -15,4 +15,4 @@ throws-like { EVAL $test_class }, X::AccessorFacade::Usage, "accessor-facade - n
  
 
 done-testing;
-# vim: expandtab shiftwidth=4 ft=perl6
+# vim: expandtab shiftwidth=4 ft=raku
