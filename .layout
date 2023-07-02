@@ -30,7 +30,7 @@
     {
       "children": [
         {
-          "name": "AccessorFacade.pm",
+          "name": "AccessorFacade.rakumod",
           "type": "file"
         }
       ],

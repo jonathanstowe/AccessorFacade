@@ -15,10 +15,10 @@
   "test-depends": [
   ],
   "meta-version": "1",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "Artistic-2.0",
   "provides": {
-    "AccessorFacade": "lib/AccessorFacade.pm"
+    "AccessorFacade": "lib/AccessorFacade.rakumod"
   },
   "support": {
     "bugtracker": "https://github.com/jonathanstowe/AccessorFacade/issues",
